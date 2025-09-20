@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Award, Palette, Package, Clock, MessageCircle, ArrowRight } from "lucide-react";
+import heroBg from "@/assets/hero-bg.jpg";
 
 const Index = () => {
   const categories = [
@@ -64,8 +65,12 @@ const Index = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="hero-gradient py-24 lg:py-32">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <section 
+        className="relative py-24 lg:py-32 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${heroBg})` }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-r from-deep-green/80 via-emerald/70 to-sage-green/60"></div>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center">
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-playfair font-bold text-white mb-6 leading-tight">
               Curated Gifts for
