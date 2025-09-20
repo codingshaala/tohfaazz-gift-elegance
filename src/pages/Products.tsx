@@ -1,12 +1,17 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MessageCircle, Filter } from "lucide-react";
+import { MessageCircle, Filter, ShoppingCart, Star } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import { useCart } from "@/contexts/CartContext";
+import { useToast } from "@/hooks/use-toast";
 
 const Products = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortBy, setSortBy] = useState("name");
+  const { addToCart } = useCart();
+  const { toast } = useToast();
 
   const products = [
     {
@@ -14,6 +19,8 @@ const Products = () => {
       name: "Premium Chocolates",
       description: "Artisanal chocolates crafted with the finest ingredients for corporate gifting",
       category: "Edibles",
+      price: 1299,
+      rating: 4.8,
       image: "https://images.unsplash.com/photo-1549007994-cb92caebd54b?w=400&h=300&fit=crop",
     },
     {
@@ -21,6 +28,8 @@ const Products = () => {
       name: "Fresh Flower Bouquets",
       description: "Elegant flower arrangements for weddings and special occasions",
       category: "Flowers",
+      price: 899,
+      rating: 4.9,
       image: "https://images.unsplash.com/photo-1563241527-3004b7be0ffd?w=400&h=300&fit=crop",
     },
     {
@@ -28,6 +37,8 @@ const Products = () => {
       name: "Luxury Diaries",
       description: "Premium leather-bound diaries perfect for corporate gifts",
       category: "Stationery",
+      price: 649,
+      rating: 4.6,
       image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=300&fit=crop",
     },
     {
@@ -35,6 +46,8 @@ const Products = () => {
       name: "Executive Pens",
       description: "Premium writing instruments for professional gifting",
       category: "Stationery",
+      price: 899,
+      rating: 4.7,
       image: "https://images.unsplash.com/photo-1565265478659-b769c6a39cd3?w=400&h=300&fit=crop",
     },
     {
@@ -42,6 +55,8 @@ const Products = () => {
       name: "Premium Perfumes",
       description: "Curated fragrance collections for luxury gifting",
       category: "Fragrance",
+      price: 2499,
+      rating: 4.8,
       image: "https://images.unsplash.com/photo-1595425970377-c9703cf48b6d?w=400&h=300&fit=crop",
     },
     {
@@ -49,6 +64,8 @@ const Products = () => {
       name: "Branded Pendrives",
       description: "Customizable tech accessories for corporate branding",
       category: "Technology",
+      price: 799,
+      rating: 4.5,
       image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=300&fit=crop",
     },
     {
@@ -56,6 +73,8 @@ const Products = () => {
       name: "Luxury Hampers",
       description: "Curated gift hampers combining multiple premium items",
       category: "Hampers",
+      price: 3499,
+      rating: 4.9,
       image: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400&h=300&fit=crop",
     },
     {
@@ -63,6 +82,8 @@ const Products = () => {
       name: "Custom Gift Sets",
       description: "Personalized gift collections tailored to your requirements",
       category: "Custom",
+      price: 1999,
+      rating: 4.7,
       image: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=400&h=300&fit=crop",
     },
   ];
@@ -84,6 +105,14 @@ const Products = () => {
     const message = encodeURIComponent(`Hello! I'm interested in ordering "${productName}". Could you please provide more details about pricing and customization options?`);
     const phoneNumber = "919876543210";
     window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
+  };
+
+  const handleAddToCart = (product: any) => {
+    addToCart(product);
+    toast({
+      title: "Added to Cart!",
+      description: `${product.name} has been added to your cart.`,
+    });
   };
 
   return (
@@ -168,33 +197,57 @@ const Products = () => {
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {sortedProducts.map((product) => (
-              <div key={product.id} className="card-product">
-                <div className="aspect-w-16 aspect-h-12 overflow-hidden">
-                  <img 
-                    src={product.image} 
-                    alt={product.name}
-                    className="w-full h-48 object-cover"
-                  />
-                </div>
-                <div className="p-6">
-                  <div className="mb-2">
-                    <span className="inline-block bg-sage-green/20 text-deep-green text-xs px-2 py-1 rounded-full font-medium">
-                      {product.category}
-                    </span>
+              <div key={product.id} className="card-product group">
+                <Link to={`/products/${product.id}`}>
+                  <div className="aspect-w-16 aspect-h-12 overflow-hidden">
+                    <img 
+                      src={product.image} 
+                      alt={product.name}
+                      className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
                   </div>
-                  <h3 className="text-xl font-playfair font-semibold text-deep-green mb-2">
-                    {product.name}
-                  </h3>
-                  <p className="text-muted-foreground mb-4 text-sm leading-relaxed">
+                </Link>
+                <div className="p-6">
+                  <div className="mb-2 flex items-center justify-between">
+                    <Badge className="bg-sage-green/20 text-deep-green text-xs px-2 py-1 rounded-full font-medium">
+                      {product.category}
+                    </Badge>
+                    <div className="flex items-center text-xs text-muted-foreground">
+                      <Star className="h-3 w-3 fill-gold text-gold mr-1" />
+                      {product.rating}
+                    </div>
+                  </div>
+                  
+                  <Link to={`/products/${product.id}`}>
+                    <h3 className="text-xl font-playfair font-semibold text-deep-green mb-2 hover:text-emerald transition-colors">
+                      {product.name}
+                    </h3>
+                  </Link>
+                  
+                  <p className="text-muted-foreground mb-3 text-sm leading-relaxed">
                     {product.description}
                   </p>
-                  <Button 
-                    onClick={() => handleWhatsAppOrder(product.name)}
-                    className="w-full btn-whatsapp"
-                  >
-                    <MessageCircle className="h-4 w-4" />
-                    Book on WhatsApp
-                  </Button>
+                  
+                  <div className="text-lg font-bold text-emerald mb-4">
+                    ₹{product.price.toLocaleString()}
+                  </div>
+                  
+                  <div className="flex gap-2">
+                    <Button 
+                      onClick={() => handleAddToCart(product)}
+                      className="flex-1 bg-emerald hover:bg-forest-green text-white"
+                    >
+                      <ShoppingCart className="h-4 w-4 mr-2" />
+                      Add to Cart
+                    </Button>
+                    <Button 
+                      onClick={() => handleWhatsAppOrder(product.name)}
+                      variant="outline" 
+                      className="border-emerald text-emerald hover:bg-emerald hover:text-white"
+                    >
+                      <MessageCircle className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
               </div>
             ))}
