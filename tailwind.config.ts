@@ -19,6 +19,17 @@ export default {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        
+        // Custom brand colors
+        'sage-green': "hsl(var(--sage-green))",
+        'emerald': "hsl(var(--emerald))",
+        'forest-green': "hsl(var(--forest-green))",
+        'mint': "hsl(var(--mint))",
+        'deep-green': "hsl(var(--deep-green))",
+        'gold': "hsl(var(--gold))",
+        'cream': "hsl(var(--cream))",
+        'warm-white': "hsl(var(--warm-white))",
+        
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
@@ -57,6 +68,16 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+      },
+      fontFamily: {
+        'playfair': ['Playfair Display', 'serif'],
+        'inter': ['Inter', 'sans-serif'],
+      },
+      boxShadow: {
+        'soft': 'var(--shadow-soft)',
+        'medium': 'var(--shadow-medium)',
+        'strong': 'var(--shadow-strong)',
+        'glow': 'var(--shadow-glow)',
       },
       borderRadius: {
         lg: "var(--radius)",
